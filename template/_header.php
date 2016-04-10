@@ -1,3 +1,12 @@
+<?php
+$objCatalogue = new Catalogue();
+$cats = $objCatalogue->getCategories();
+
+$objBusiness = new Business();
+$business = $objBusiness->getBusiness();
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,17 +22,34 @@
 
 
 <body>
+	
 <div id="header">
 	<div id="header_in">
-		<h5><a href="/">Business name</a></h5>
+		<h5><a href="/"><?php echo $business['name']; ?></a></h5>
 	</div>
-</div>
+</div> <!--End header -->
+
+
 <div id="outer">
 	<div id="wrapper">
+		
 		<div id="left">
-			<h2>Categories</h2>
-			<ul id="navigation">
-				<li><a href="#">link</a></li>
-			</ul>		
-		</div>
+		   <!-- Check if Categories are not empty using $cats variable which is obtained by
+		   		$cats = $objCatalogue->getCategories(); --> 
+           <?php if (!empty($cats)) { ?>
+				<h2>Categories</h2>
+				<ul id="navigation">
+					<?php 
+						foreach($cats as $cat) {
+							echo "<li><a href=\"/?page=catalogue&amp;category=".$cat['id']."\"";
+							echo Helper::getActive(array('category' => $cat['id']));
+							echo ">";
+							echo Helper::encodeHtml($cat['name']);
+							echo "</a></li>";
+						}
+					 ?>
+				</ul>
+			<?php } ?>		
+		</div><!-- End left -->
+		
 		<div id="right">
