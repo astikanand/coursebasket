@@ -4,7 +4,7 @@ class Dbase {
 	
 	// Variables and values for connection  to database
 	private $_host = "localhost";
-	private $_user = "astikanand";
+	private $_user = "astik";
 	private $_password = "Nandan178#suresh";
 	private $_name = "coursebasket";
 	
@@ -48,41 +48,41 @@ class Dbase {
 	 * unable to select reports error. 
 	 */
 	private function connect() {
-		$this->_conndb = mysql_connect($this->_host, $this->_user, $this->_password);
+		$this->_conndb = mysqli_connect($this->_host, $this->_user, $this->_password);
 		
 		if (!$this->_conndb) {
-			die("Database connection failed:<br />" . mysql_error());
+			die("Database connection failed:<br />" . mysqli_error());
 		} else {
-			$_select = mysql_select_db($this->_name, $this->_conndb);
+			$_select = mysqli_select_db($this->_conndb , $this->_name);
 			if (!$_select) {
-				die("Database selection failed:<br />" . mysql_error());
+				die("Database selection failed:<br />" . mysqli_error());
 			}
 		}
-		mysql_set_charset("utf8", $this->_conndb);
+		mysqli_set_charset($this->_conndb ,"utf8");
 	}
 	
 	
-	/* Function to close the database connection if mysql_close not passed 
+	/* Function to close the database connection if mysqli_close not passed 
 	 * successfully report error
 	 */
 	public function close() {
-		if (!mysql_close($this->_conndb)) {
+		if (!mysqli_close($this->_conndb)) {
 			die("Closing connection failed.");
 		}
 	}
 	
 	
 	/* Function to skip all illegal characters for interaction with database
-	 * Check  if mysql_real_escape_string function exists and if it is then 
-	 * remove all quotes and then pass this to mysql_real_escape_string and
+	 * Check  if mysqli_real_escape_string function exists and if it is then 
+	 * remove all quotes and then pass this to mysqli_real_escape_string and
 	 * store it in $value
 	 */
 	public function escape($value) {
-		if(function_exists("mysql_real_escape_string")) {
+		if(function_exists("mysqli_real_escape_string")) {
 			if (get_magic_quotes_gpc()) {
 				$value = stripslashes($value);
 			} 
-			$value = mysql_real_escape_string($value);
+			$value = mysqli_real_escape_string($value);
 		} else {
 			if(!get_magic_quotes_gpc()) {
 				$value = addcslashes($value);
@@ -99,7 +99,7 @@ class Dbase {
 	 */
 	public function query($sql) {
 		$this->_last_query = $sql;
-		$result = mysql_query($sql, $this->_conndb);
+		$result = mysqli_query($this->_conndb , $sql);
 		$this->displayQuery($result);
 		return $result;
 	}
@@ -111,27 +111,27 @@ class Dbase {
 	 */
 	public function displayQuery($result) {
 		if(!$result) {
-			$output  = "Database query failed: ". mysql_error() . "<br />";
+			$output  = "Database query failed: ". mysqli_error() . "<br />";
 			$output .= "Last SQL query was: ".$this->_last_query;
 			die($output);
 		} else {
-			$this->_affected_rows = mysql_affected_rows($this->_conndb);
+			$this->_affected_rows = mysqli_affected_rows($this->_conndb);
 		}
 	}
 	
 	
 	
 	/* Function to fetch the value from  database first it calls query()
-	 * function and then result of it is passed to mysql_fetch_assoc()
+	 * function and then result of it is passed to mysqli_fetch_assoc()
 	 * and stored result in $out array
 	 */
 	public function fetchAll($sql) {
 		$result = $this->query($sql);
 		$out = array();
-		while($row = mysql_fetch_assoc($result)) {
+		while($row = mysqli_fetch_assoc($result)) {
 			$out[] = $row;
 		}
-		mysql_free_result($result);
+		mysqli_free_result($result);
 		return $out;
 	}
 	
@@ -147,7 +147,7 @@ class Dbase {
 
     // Function to keep track of last ID
 	public function lastId() {
-		return mysql_insert_id($this->_conndb);
+		return mysqli_insert_id($this->_conndb);
 	}
 	
 	
