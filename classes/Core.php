@@ -32,8 +32,15 @@ class Core {
 	
 	
 	public function run() {
+		 
 		ob_start();
-		require_once('index.php');
+		
+		/* Url::getPage() is called to get the page as getPage() is static 
+		 * function hence called without instantiation in this way
+		 */
+		require_once(Url::getPage());
+		
+		
 		ob_get_flush();
 	}
 	
