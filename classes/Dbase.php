@@ -82,7 +82,7 @@ class Dbase {
 			if (get_magic_quotes_gpc()) {
 				$value = stripslashes($value);
 			} 
-			$value = mysqli_real_escape_string($value);
+			$value = mysqli_real_escape_string($this->_conndb,$value);
 		} else {
 			if(!get_magic_quotes_gpc()) {
 				$value = addcslashes($value);
