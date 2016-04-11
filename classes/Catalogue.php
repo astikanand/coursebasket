@@ -14,11 +14,41 @@ class Catalogue extends Application {
 	
 	
 	
+	/* This function is to fetch all the names from the categories table
+	 * it fetches from datatbase
+	 */
 	public function getCategories() {
 		$sql = "SELECT * FROM `{$this->_table}`
 				ORDER BY `name` ASC";
 		return $this->db->fetchAll($sql);
 	}
+	
+	
+	
+	
+	/* Function to get specific category from database which is 
+	 * specified by passing $id parameter
+	 */
+	public function getCategory($id) {
+		$sql = "SELECT * FROM `{$this->_table}`
+				WHERE `id` = '".$this->db->escape($id)."'";
+		return $this->db->fetchOne($sql);
+	}
+	
+	
+	
+	
+	/* Function to fetch all the data from products table in the
+	 * datatbase
+	 */
+	public function getProducts($cat) {
+		$sql = "SELECT * FROM `{$this->_table_2}`
+				WHERE `category` = '".$this->db->escape($cat)."'
+				ORDER BY `date` DESC";
+		return $this->db->fetchAll($sql);
+	}
+	
+	
 	
 }
 
