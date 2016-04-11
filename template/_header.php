@@ -21,6 +21,7 @@ $business = $objBusiness->getBusiness();
 </head>
 
 
+
 <body>
 	
 <div id="header">
