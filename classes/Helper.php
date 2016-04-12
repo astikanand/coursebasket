@@ -2,7 +2,7 @@
 class Helper {
 	
 	
-	public static function getActive($page = null) {
+   public static function getActive($page = null) {
 		if(!empty($page)) {
 			if(is_array($page)) {
 				$error = array();
@@ -42,5 +42,34 @@ class Helper {
 			break;
 		}
 	}
+	
+	
+ 
+	//Function to get the size of the image
+	public static function getImgSize($image, $case) {
+		if(is_file($image)) {
+			// 0 => width, 1 => height, 2 => type, 3 => attributes
+			$size = getimagesize($image);
+			return $size[$case];
+		}
+	}
+	
+	
+	/* To shorten the string provided if the string is larger and we dont
+	 * want to show it completely
+	 * &hellip represents 3 dots
+	 */
+	public static function shortenString($string, $len = 150) {
+		if (strlen($string) > $len) {
+			$string = trim(substr($string, 0, $len));
+			
+			$string = substr($string, 0, strrpos($string, " "))."&hellip;";
+		} else {
+			$string .= "&hellip;";
+		}
+		return $string;
+	}
+	
+	
 	
 }
