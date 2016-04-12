@@ -20,7 +20,9 @@ class Business extends Application {
 	}
 	
 	
-	
+	/* Function to get Vat Rate from the database
+	 * 
+	 */
 	public function getVatRate() {
 		$business = $this->getBusiness();
 		return $business['vat_rate'];
