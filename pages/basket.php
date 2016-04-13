@@ -11,7 +11,7 @@ if (!empty($session)) {
 		$out[$key] = $objCatalogue->getProduct($key);
 	}
 }
-
+     
 require_once('_header.php'); 
 ?>
 
