@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	
-	
+	// Function for refreshing SmallBasket
 	function refreshSmallBasket() {
 		$.ajax({
 			
@@ -18,6 +18,30 @@ $(document).ready(function() {
 		});
         
     }
+	
+	
+	
+	// Function for refreshing BigBasket
+	function refreshBigBasket() {
+		$.ajax({
+		    url: '/modules/basket_view.php',
+			dataType: 'html',
+			success: function(data) {
+				$('#big_basket').html(data); 
+                initBinds();      
+			},
+			error: function(data) {
+				alert("Error1 occured");
+			}
+			
+		});
+        
+    }
+	
+	
+	
+	
+	
 	
 	
 	
@@ -58,4 +82,53 @@ $(document).ready(function() {
 			return false;
 		});
 	}
+	
+	
+	//Initialize the function first
+	initBinds();
+	
+	function initBinds() {
+		if ($('.update_basket').length > 0) {
+			 $('.update_basket').bind ('click', updateBasket);
+		}
+		if ($('.fld_qty').length > 0 ) {
+			$('.fld_qty').bind('keypress', function(e) {
+				var code = e.keyCode ? e.keyCode : e.which;
+				if (code == 13) {
+					updateBasket();
+				}
+			});
+		}
+	}
+	
+	
+	
+	function updateBasket() {
+		$('#frm_basket :input').each(function() {
+			var val = $(this).val();
+			var sid = $(this).attr('id').split('_');
+		
+			$.ajax({
+				type: 'POST',
+			    url: '/modules/basket_qty.php',
+				data: ({ id: sid[1], qty:val }),
+				success: function(data) {
+					refreshSmallBasket();
+	                refreshBigBasket();
+				},
+				error: function(data) {
+					alert("Error occured");
+				}
+				
+			});
+     
+     });
+    
+    }
+	
+	
+	
+	
+	
+	
 });
