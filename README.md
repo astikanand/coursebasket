@@ -10,6 +10,6 @@ Live
 Preview
 ------------------------------
 
-[img]https://i.imgur.com/kbpNCcf.png[/img]
+![img](https://i.imgur.com/kbpNCcf.png)
 
 
